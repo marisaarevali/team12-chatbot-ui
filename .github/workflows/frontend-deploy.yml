@@ -10,10 +10,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: team12-chatbot-ui
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +32,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "team12-chatbot-ui/dist/*"
+          source: "dist/*"
           target: "/tmp/bossbot-deploy"
 
       - name: Activate on server
@@ -48,5 +44,5 @@ jobs:
           script: |
             sudo mkdir -p ${{ vars.DEPLOY_PATH_FRONTEND }}
             sudo rm -rf ${{ vars.DEPLOY_PATH_FRONTEND }}/*
-            sudo cp -r /tmp/bossbot-deploy/team12-chatbot-ui/dist/* ${{ vars.DEPLOY_PATH_FRONTEND }}/
+            sudo cp -r /tmp/bossbot-deploy/dist/* ${{ vars.DEPLOY_PATH_FRONTEND }}/
             sudo systemctl reload nginx
